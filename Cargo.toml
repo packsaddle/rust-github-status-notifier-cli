@@ -18,7 +18,7 @@ keywords = ["generator-rustmc"]
 license = "MIT/Apache-2.0"
 name = "github-status-notifier-cli"
 repository = "https://github.com/packsaddle/rust-github-status-notifier-cli"
-version = "0.1.0"
+version = "0.0.1"
 
 [[bin]]
 name = "github-status-notifier"
