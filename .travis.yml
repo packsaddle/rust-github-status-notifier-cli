@@ -76,7 +76,7 @@ deploy:
   # - Encrypt it: `travis encrypt 0123456789012345678901234567890123456789
   # - Paste the output down here
   api_key:
-    secure: "secureSECUREsecureSECUREsecureSECUREsecureSECUREsecureSECUREsecureSECUREsecureSECUREsecureSECUREsecureSECUREsecureSECUREsecureSECUREsecureSECUREsecureSECUREsecureSECURE"
+    secure: "TtUfGzkFN6hLNDjmpR95Iu43bGDnLzWfhpcf55xrQopC+ta8VceIrdEBzuvLdNY7MaU5PzvMWE9DZKDotE9sNVLYaDTgrJU+NhhRuvahy6Kp/Pd/f+e7ZPFNBx8MG8c3m9T+c2NDKGzMFY7uNaYu9Sdm0f1mBC3cL9Fvet7IGCGz5ldhNFEhrEXlU32TlUqne8PBrC4a5l/z4JS03+OI5TfdRCpgngFMfKU8bmEn0+jMKel/GC9z5z+zWw9Q5cJEn+dCypeAAm1rCTfYiBYpEm+uSU+ydEJgnnmqZf0h8S2m70WpdcmdBG92rsYb4BlrDGYllukFlXJ8TKTa+WUUZAeD9VU/uPdJcDXG1UZ6b+I2ksTKwXJyZcya9P6MtEJkkCQZKStEtxGZaxX7XYGDn6hGoY64Fanm5lpq39CfP7k+TcnC/z1PHUMCbzCdzQCoV8iEdZ9S2nuI+vHEWQ5zPrWurb13M9t00jQW0zAOnXyCmdYKD++xraAmBAZmU/fPj6FO6BR0+sb7WQ5EGTTbvWQ3xe3I1p0vSWH2FtQJiYwMn4ch7UPca1mf8pu/AjHEfC7r/BGEhlZ6kofMqbINoAOwAcTrHsRwvcvknKGQ1/9xMQT0NbQ9im/bDZZ+I444WZXMOjX9AEiJ7A/tWZ7VBgt9ZFtjndCt+LdeHStd8OI="
   file_glob: true
   file: $CRATE_NAME-$TRAVIS_TAG-$TARGET.*
   on:
