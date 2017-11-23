@@ -1,0 +1,33 @@
+[package]
+authors = ["Sanemat <o.gata.ken@gmail.com>"]
+categories = [
+    "command-line-interface",
+    "command-line-utilities",
+    "development-tools",
+]
+description = "Notify GitHub status CLI."
+include = [
+    "src/**/*",
+    "Cargo.toml",
+    "changelog.md",
+    "readme.md",
+    "license-apache",
+    "license-mit",
+]
+keywords = ["generator-rustmc"]
+license = "MIT/Apache-2.0"
+name = "github-status-notifier-cli"
+repository = "https://github.com/packsaddle/rust-github-status-notifier-cli"
+version = "0.1.0"
+
+[[bin]]
+name = "github-status-notifier"
+path = "src/main.rs"
+[badges.appveyor]
+project_name = "packsaddle/rust-github-status-notifier-cli"
+repository = "packsaddle/rust-github-status-notifier-cli"
+
+[badges.travis-ci]
+repository = "packsaddle/rust-github-status-notifier-cli"
+
+[dependencies]
