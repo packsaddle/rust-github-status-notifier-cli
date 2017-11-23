@@ -29,8 +29,8 @@ MIT/Apache-2.0 © [Sanemat](sane.jp)
 
 [travis-url]: https://travis-ci.org/packsaddle/rust-github-status-notifier-cli
 [travis-image]: https://img.shields.io/travis/packsaddle/rust-github-status-notifier-cli/master.svg?style=flat-square&label=travis
-[appveyor-url]: https://ci.appveyor.com/project/packsaddle/rust-github-status-notifier-cli/branch/master
-[appveyor-image]: https://img.shields.io/appveyor/ci/packsaddle/rust-github-status-notifier-cli/master.svg?style=flat-square&label=appveyor
+[appveyor-url]: https://ci.appveyor.com/project/sanemat/rust-github-status-notifier-cli/branch/master
+[appveyor-image]: https://img.shields.io/appveyor/ci/sanemat/rust-github-status-notifier-cli/master.svg?style=flat-square&label=appveyor
 [crates-url]: https://crates.io/crates/github-status-notifier-cli
 [crates-image]: https://img.shields.io/crates/v/github-status-notifier-cli.svg?style=flat-square
 [license-image]: https://img.shields.io/crates/l/github-status-notifier-cli.svg?style=flat-square

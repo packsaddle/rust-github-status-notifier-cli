@@ -24,7 +24,7 @@ version = "0.1.0"
 name = "github-status-notifier"
 path = "src/main.rs"
 [badges.appveyor]
-project_name = "packsaddle/rust-github-status-notifier-cli"
+project_name = "sanemat/rust-github-status-notifier-cli"
 repository = "packsaddle/rust-github-status-notifier-cli"
 
 [badges.travis-ci]
