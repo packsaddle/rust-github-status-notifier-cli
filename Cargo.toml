@@ -31,3 +31,7 @@ repository = "packsaddle/rust-github-status-notifier-cli"
 repository = "packsaddle/rust-github-status-notifier-cli"
 
 [dependencies]
+futures = "0.1.17"
+hyper = "0.11.7"
+hyper-tls = "0.1.2"
+tokio-core = "0.1.10"
