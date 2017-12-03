@@ -9,20 +9,21 @@ use self::tokio_core::reactor::Core;
 use self::futures::{Future, Stream};
 use self::futures::future;
 
-use self::hyper::{Url, Method, Error};
+use self::hyper::Method;
 use self::hyper::client::{Client, Request};
-use self::hyper::header::{Authorization, Accept, UserAgent, qitem};
+use self::hyper::header::{Authorization, Accept, UserAgent, qitem, Headers};
 use self::hyper::mime::Mime;
 use self::hyper_tls::HttpsConnector;
 
 pub fn run() -> Result<String, Box<Error>> {
-    let url = Url::parse("https://api.github.com/user").unwrap();
+    let url = "https://api.github.com/user".parse().unwrap();
     let mut req = Request::new(Method::Get, url);
     let mime: Mime = "application/vnd.github.v3+json".parse().unwrap();
     let token = String::from("token {Your_Token_Here}");
-    req.headers_mut().set(UserAgent(String::from("github-rs")));
-    req.headers_mut().set(Accept(vec![qitem(mime)]));
-    req.headers_mut().set(Authorization(token));
+    let mut headers = Headers::new();
+    headers.set(UserAgent::new("github-status-notifier"));
+    headers.set(Accept(vec![qitem(mime)]));
+    headers.set(Authorization(token));
 
     let mut event_loop = Core::new().unwrap();
     let handle = event_loop.handle();
@@ -36,10 +37,10 @@ pub fn run() -> Result<String, Box<Error>> {
 
             res.body().fold(Vec::new(), |mut v, chunk| {
                 v.extend(&chunk[..]);
-                future::ok::<_, Error>(v)
+                future::ok::<_, hyper::Error>(v)
             }).and_then(|chunks| {
                 let s = String::from_utf8(chunks).unwrap();
-                future::ok::<_, Error>(s)
+                future::ok::<_, hyper::Error>(s)
             })
         });
     let user = event_loop.run(work).unwrap();
