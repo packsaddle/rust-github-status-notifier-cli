@@ -1,27 +1,51 @@
 use std::error::Error;
 
-extern crate futures;
 extern crate hyper;
+extern crate hyper_tls;
+extern crate futures;
 extern crate tokio_core;
 
-use std::io::{self, Write};
-use self::futures::{Future, Stream};
-use self::hyper::Client;
 use self::tokio_core::reactor::Core;
+use self::futures::{Future, Stream};
+use self::futures::future;
+
+use self::hyper::{Url, Method, Error};
+use self::hyper::client::{Client, Request};
+use self::hyper::header::{Authorization, Accept, UserAgent, qitem};
+use self::hyper::mime::Mime;
+use self::hyper_tls::HttpsConnector;
 
 pub fn run() -> Result<String, Box<Error>> {
-    let mut core = Core::new()?;
-    let client = Client::new(&core.handle());
+    let url = Url::parse("https://api.github.com/user").unwrap();
+    let mut req = Request::new(Method::Get, url);
+    let mime: Mime = "application/vnd.github.v3+json".parse().unwrap();
+    let token = String::from("token {Your_Token_Here}");
+    req.headers_mut().set(UserAgent(String::from("github-rs")));
+    req.headers_mut().set(Accept(vec![qitem(mime)]));
+    req.headers_mut().set(Authorization(token));
 
-    let uri = "http://httpbin.org/ip".parse()?;
-    let work = client.get(uri).and_then(|res| {
-        println!("Response: {}", res.status());
+    let mut event_loop = Core::new().unwrap();
+    let handle = event_loop.handle();
+    let client = Client::configure()
+        .connector(HttpsConnector::new(4,&handle))
+        .build(&handle);
+    let work = client.request(req)
+        .and_then(|res| {
+            println!("Response: {}", res.status());
+            println!("Headers: \n{}", res.headers());
 
-        res.body().for_each(|chunk| {
-            io::stdout().write_all(&chunk).map_err(From::from)
-        })
-    });
-    core.run(work)?;
-
+            res.body().fold(Vec::new(), |mut v, chunk| {
+                v.extend(&chunk[..]);
+                future::ok::<_, Error>(v)
+            }).and_then(|chunks| {
+                let s = String::from_utf8(chunks).unwrap();
+                future::ok::<_, Error>(s)
+            })
+        });
+    let user = event_loop.run(work).unwrap();
+    println!("We've made it outside the request! \
+              We got back the following from our \
+              request:\n");
+    println!("{}", user);
     Ok("ok".to_owned())
 }
