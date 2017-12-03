@@ -11,24 +11,23 @@ use self::futures::future;
 
 use self::hyper::Method;
 use self::hyper::client::{Client, Request};
-use self::hyper::header::{Authorization, Accept, UserAgent, qitem, Headers};
+use self::hyper::header::{Authorization, Accept, UserAgent, qitem};
 use self::hyper::mime::Mime;
 use self::hyper_tls::HttpsConnector;
 
 pub fn run() -> Result<String, Box<Error>> {
-    let url = "https://api.github.com/user".parse().unwrap();
+    let url = "https://api.github.com/user".parse::<hyper::Uri>().unwrap();
     let mut req = Request::new(Method::Get, url);
     let mime: Mime = "application/vnd.github.v3+json".parse().unwrap();
     let token = String::from("token {Your_Token_Here}");
-    let mut headers = Headers::new();
-    headers.set(UserAgent::new("github-status-notifier"));
-    headers.set(Accept(vec![qitem(mime)]));
-    headers.set(Authorization(token));
+    req.headers_mut().set(Accept(vec![qitem(mime)]));
+    req.headers_mut().set(UserAgent::new("github-status-notifier"));
+    req.headers_mut().set(Authorization(token));
 
     let mut event_loop = Core::new().unwrap();
     let handle = event_loop.handle();
     let client = Client::configure()
-        .connector(HttpsConnector::new(4,&handle))
+        .connector(HttpsConnector::new(4,&handle)?)
         .build(&handle);
     let work = client.request(req)
         .and_then(|res| {
