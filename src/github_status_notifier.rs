@@ -21,31 +21,36 @@ pub fn run() -> Result<String, Box<Error>> {
     let mime: Mime = "application/vnd.github.v3+json".parse().unwrap();
     let token = String::from("token {Your_Token_Here}");
     req.headers_mut().set(Accept(vec![qitem(mime)]));
-    req.headers_mut().set(UserAgent::new("github-status-notifier"));
+    req.headers_mut().set(
+        UserAgent::new("github-status-notifier"),
+    );
     req.headers_mut().set(Authorization(token));
 
     let mut event_loop = Core::new().unwrap();
     let handle = event_loop.handle();
     let client = Client::configure()
-        .connector(HttpsConnector::new(4,&handle)?)
+        .connector(HttpsConnector::new(4, &handle)?)
         .build(&handle);
-    let work = client.request(req)
-        .and_then(|res| {
-            println!("Response: {}", res.status());
-            println!("Headers: \n{}", res.headers());
+    let work = client.request(req).and_then(|res| {
+        println!("Response: {}", res.status());
+        println!("Headers: \n{}", res.headers());
 
-            res.body().fold(Vec::new(), |mut v, chunk| {
+        res.body()
+            .fold(Vec::new(), |mut v, chunk| {
                 v.extend(&chunk[..]);
                 future::ok::<_, hyper::Error>(v)
-            }).and_then(|chunks| {
+            })
+            .and_then(|chunks| {
                 let s = String::from_utf8(chunks).unwrap();
                 future::ok::<_, hyper::Error>(s)
             })
-        });
+    });
     let user = event_loop.run(work).unwrap();
-    println!("We've made it outside the request! \
+    println!(
+        "We've made it outside the request! \
               We got back the following from our \
-              request:\n");
+              request:\n"
+    );
     println!("{}", user);
     Ok("ok".to_owned())
 }
